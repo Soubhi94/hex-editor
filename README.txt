@@ -1,73 +1,52 @@
-================================================================================
-PROJEKT: HYBRID HEX EDITOR
-================================================================================
+# Hybrid Hex Editor
 
-Ein professioneller, plattformunabhängiger Hex-Editor für die Konsole.
-Entwickelt für die Analyse und Bearbeitung von Binärdateien jeder Größe
-(Gigabytes+), ohne den Arbeitsspeicher zu belasten.
+Plattformunabhängiger Hex-Editor für die Konsole zur Analyse und
+Bearbeitung sehr großer Binärdateien ohne vollständiges Laden in den
+Arbeitsspeicher.
 
---------------------------------------------------------------------------------
-VORTEILE & FUNKTIONEN
---------------------------------------------------------------------------------
-1. Hybrid-Ansicht:     Zeigt Hex, Binär und Text gleichzeitig an.
-2. Direct Disk Access: Lädt Dateien nicht in den RAM. Ideal für riesige
-                       Dateien (Logs, ISOs, Dumps).
-3. Smart Overlay:      Speichert nur Änderungen im RAM. Das Original wird
-                       erst beim Speichern ("Patching") geändert.
-4. Cross-Platform:     Läuft auf Windows, Linux und macOS ohne Installation
-                       von externen Bibliotheken (kein ncurses nötig).
-5. Präzise Eingabe:   Strikte Validierung für Hex (0-F) und Binär (0-1).
+## Funktionen
 
---------------------------------------------------------------------------------
-INSTALLATION & KOMPILIEREN
---------------------------------------------------------------------------------
-Voraussetzung: Ein C++ Compiler (GCC, Clang, MSVC) mit C++17 Support.
+-   Gleichzeitige Anzeige von Hex, Binär und ASCII
+-   Direkter Dateizugriff ohne vollständiges Laden in den RAM
+-   Änderungen werden als Overlay im Speicher gehalten und erst beim
+    Speichern gepatcht
+-   Läuft auf Windows, Linux und macOS ohne externe Bibliotheken
+-   Validierte Eingabe für Hex- und Binärwerte
 
-Schritt 1: Programm kompilieren
-Führen Sie diesen Befehl im Terminal aus:
+## Kompilieren
 
+Voraussetzung: C++17 Compiler (GCC, Clang oder MSVC)
+
+``` bash
 g++ -std=c++17 main.cpp src/*.cpp -I include -o hexeditor
+```
 
-(WICHTIG: 'tests.cpp' darf hier NICHT enthalten sein.)
+Wichtig: `tests.cpp` darf hier nicht enthalten sein.
 
-Optional: Unit-Tests kompilieren 
-Um die Tests separat zu bauen:
+Unit-Tests separat:
+
+``` bash
 g++ -std=c++17 tests.cpp src/*.cpp -I include -o run_tests
+```
 
---------------------------------------------------------------------------------
-BENUTZUNG
---------------------------------------------------------------------------------
-Starten Sie das Programm mit dem Dateinamen als Argument:
+## Start
 
-./hexeditor dateiname.bin   (Linux/macOS)
-hexeditor.exe dateiname.bin (Windows)
+``` bash
+./hexeditor datei.bin      # Linux / macOS
+hexeditor.exe datei.bin    # Windows
+```
 
---------------------------------------------------------------------------------
-STEUERUNG
---------------------------------------------------------------------------------
-Das Programm reagiert sofort auf Tastendruck (kein Enter für Navigation nötig).
+## Steuerung
 
-[ NAVIGATION ]
-  Pfeiltasten / WASD : Cursor bewegen
+Navigation: - Pfeiltasten oder W A S D
 
-[ EDITIEREN ]
-  H : Hex-Modus    -> Wert eingeben (z.B. FF) -> Enter
-  B : Binaer-Modus -> Bits eingeben (z.B. 01010101) -> Enter
-  T : Text-Modus   -> Einzelnes Zeichen tippen
+Editieren: - H -- Hex-Wert eingeben (z.B. FF) - B -- Binärwert eingeben
+(z.B. 01010101) - T -- ASCII-Zeichen eingeben
 
-[ SYSTEM ]
-  Q : Beenden (Fragt bei ungespeicherten Änderungen nach Speichern)
+System: - Q -- Beenden (fragt bei ungespeicherten Änderungen)
 
---------------------------------------------------------------------------------
-BEKANNTE EINSCHRAENKUNGEN (LIMITATIONS)
---------------------------------------------------------------------------------
-1. Terminalgröße:
-   Das Interface benötigt mind. 100 Zeichen Breite und 25 Zeilen Höhe.
-   Bei kleineren Fenstern kann das Layout verrutschen.
+## Einschränkungen
 
-2. Flackern (Windows):
-   In der alten 'cmd.exe' kann es zu leichtem Flackern kommen.
-   Empfehlung: Nutzen Sie 'Windows Terminal' oder 'PowerShell'.
-
-3. Sonderzeichen:
-   Nicht-druckbare Zeichen (0-31) werden im Text-Modus als '.' angezeigt.
+-   Mindestgröße Terminal: 100 Zeichen Breite, 25 Zeilen Höhe
+-   In alter Windows cmd.exe leichtes Flackern möglich
+-   Nicht druckbare ASCII-Zeichen werden als Punkt dargestellt
