@@ -1,52 +1,90 @@
-# Hybrid Hex Editor
+================================================================================
+PROJEKT: HYBRID HEX EDITOR
+================================================================================
 
-Plattformunabhängiger Hex-Editor für die Konsole zur Analyse und
-Bearbeitung sehr großer Binärdateien ohne vollständiges Laden in den
-Arbeitsspeicher.
+Ein plattformunabhängiger, terminalbasierter Hex-Editor in C++.
+Die Datei wird nicht vollständig in den Arbeitsspeicher geladen; Bytes werden bei Bedarf direkt aus der Datei gelesen.
 
-## Funktionen
 
--   Gleichzeitige Anzeige von Hex, Binär und ASCII
--   Direkter Dateizugriff ohne vollständiges Laden in den RAM
--   Änderungen werden als Overlay im Speicher gehalten und erst beim
-    Speichern gepatcht
--   Läuft auf Windows, Linux und macOS ohne externe Bibliotheken
--   Validierte Eingabe für Hex- und Binärwerte
+--------------------------------------------------------------------------------
+VORTEILE & FUNKTIONEN
+--------------------------------------------------------------------------------
+1. Hybrid-Ansicht:     Zeigt Hex, Binär und Text gleichzeitig an.
+2. Direct Disk Access: Lädt Dateien nicht in den RAM.
+3. Smart Overlay:      Speichert nur Änderungen im RAM. Das Original wird
+                       erst beim Speichern ("Patching") geändert.
+4. Cross-Platform:     Läuft auf Windows, Linux und macOS ohne Installation
+                       von externen Bibliotheken (kein ncurses nötig).
+5. Präzise Eingabe:   Strikte Validierung für Hex (0-F) und Binär (0-1).
 
-## Kompilieren
 
-Voraussetzung: C++17 Compiler (GCC, Clang oder MSVC)
+--------------------------------------------------------------------------------
+ARCHITEKTURÜBERSICHT
+--------------------------------------------------------------------------------
 
-``` bash
+Das System ist modular aufgebaut und trennt Dateizugriff, Editorzustand,
+Darstellung, Konvertierung und Eingabe strikt voneinander:
+
+- FileBuffer:      Lesen/Schreiben einzelner Bytes direkt aus der Datei,
+                   Verwaltung eines Änderungs-Overlays.
+- StateManager:    Verwaltung von Cursorposition, Viewport und Edit-Modus.
+- ConversionEngine: Umwandlung zwischen Byte-Werten und Hex/Binär/Text-Darstellung.
+- EditorUI:        Rendering der aktuellen Ansicht im Terminal.
+- Platform:        Plattformabhängige Tastatureingabe und Terminal-Interaktion.
+
+Der Datenfluss ist unidirektional:
+Eingabe → State-Update → Byte-Zugriff → Darstellung.
+
+--------------------------------------------------------------------------------
+INSTALLATION & KOMPILIEREN
+--------------------------------------------------------------------------------
+Voraussetzung: Ein C++ Compiler (GCC, Clang, MSVC) mit C++17 Support.
+
+Schritt 1: Programm kompilieren
+Führen Sie diesen Befehl im Terminal aus:
+
 g++ -std=c++17 main.cpp src/*.cpp -I include -o hexeditor
-```
 
-Wichtig: `tests.cpp` darf hier nicht enthalten sein.
+(WICHTIG: 'tests.cpp' darf hier NICHT enthalten sein.)
 
-Unit-Tests separat:
-
-``` bash
+Optional: Unit-Tests kompilieren 
+Um die Tests separat zu bauen:
 g++ -std=c++17 tests.cpp src/*.cpp -I include -o run_tests
-```
 
-## Start
+--------------------------------------------------------------------------------
+BENUTZUNG
+--------------------------------------------------------------------------------
+Starten Sie das Programm mit dem Dateinamen als Argument:
 
-``` bash
-./hexeditor datei.bin      # Linux / macOS
-hexeditor.exe datei.bin    # Windows
-```
+./hexeditor dateiname.bin   (Linux/macOS)
+hexeditor.exe dateiname.bin (Windows)
 
-## Steuerung
+--------------------------------------------------------------------------------
+STEUERUNG
+--------------------------------------------------------------------------------
+Das Programm reagiert sofort auf Tastendruck (kein Enter für Navigation nötig).
 
-Navigation: - Pfeiltasten oder W A S D
+[ NAVIGATION ]
+  Pfeiltasten / WASD : Cursor bewegen
 
-Editieren: - H -- Hex-Wert eingeben (z.B. FF) - B -- Binärwert eingeben
-(z.B. 01010101) - T -- ASCII-Zeichen eingeben
+[ EDITIEREN ]
+  H : Hex-Modus    -> Wert eingeben (z.B. FF) -> Enter
+  B : Binaer-Modus -> Bits eingeben (z.B. 01010101) -> Enter
+  T : Text-Modus   -> Einzelnes Zeichen tippen
 
-System: - Q -- Beenden (fragt bei ungespeicherten Änderungen)
+[ SYSTEM ]
+  Q : Beenden (Fragt bei ungespeicherten Änderungen nach Speichern)
 
-## Einschränkungen
+--------------------------------------------------------------------------------
+BEKANNTE EINSCHRAENKUNGEN (LIMITATIONS)
+--------------------------------------------------------------------------------
+1. Terminalgröße:
+   Das Interface benötigt mind. 100 Zeichen Breite und 25 Zeilen Höhe.
+   Bei kleineren Fenstern kann das Layout verrutschen.
 
--   Mindestgröße Terminal: 100 Zeichen Breite, 25 Zeilen Höhe
--   In alter Windows cmd.exe leichtes Flackern möglich
--   Nicht druckbare ASCII-Zeichen werden als Punkt dargestellt
+2. Flackern (Windows):
+   In der alten 'cmd.exe' kann es zu leichtem Flackern kommen.
+   Empfehlung: Nutzen Sie 'Windows Terminal' oder 'PowerShell'.
+
+3. Sonderzeichen:
+   Nicht-druckbare Zeichen (0-31) werden im Text-Modus als '.' angezeigt.
