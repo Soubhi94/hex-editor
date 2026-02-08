@@ -3,6 +3,10 @@
 #include "include/ConversionEngine.hpp"
 #include "include/StateManager.hpp"
 
+// Unit-Tests: decken ConversionEngine (Format/Parsing) und StateManager (Cursor/Scroll-Logik) ab.
+// FileBuffer und UI werden manuell getestet (I/O und Terminalverhalten sind integrationsnah).
+
+
 void testConversion()
 {
     std::cout << "Test ConversionEngine... ";
