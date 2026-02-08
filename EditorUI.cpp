@@ -5,6 +5,9 @@
 #include <iomanip>
 #include <sstream>
 
+// Hinweis: Offset-Anzeige ist aktuell auf 16-bit (2 Byte) formatiert.
+// Für Dateien > 65535 Bytes wiederholt sich die Anzeige; Datenzugriff bleibt korrekt.
+
 void EditorUI::draw(const FileBuffer &fb, const StateManager &state)
 {
     std::stringstream ss;
@@ -90,3 +93,4 @@ void EditorUI::draw(const FileBuffer &fb, const StateManager &state)
 
     std::cout << ss.str() << std::flush;
 }
+
