@@ -16,6 +16,10 @@ private:
     mutable std::ifstream fileStream;
     size_t fileSize = 0;
 
+// Overlay-Buffer: Speichert nur geänderte Bytes (Index -> neuer Wert).
+// Lesen: overlay hat Vorrang; sonst Random-Access von der Datei.
+// Speichern: patcht nur geänderte Bytes in die Originaldatei.
+
     std::map<size_t, uint8_t> modifiedBytes;
     bool dirty = false;
 
@@ -25,6 +29,9 @@ public:
     bool open(const std::string &filename);
     bool save();
 
+// Random-Access Read: Byte wird bei Bedarf direkt von Disk gelesen (keine komplette Datei im RAM).
+
+
     uint8_t getByte(size_t index) const;
     void setByte(size_t index, uint8_t value);
 
@@ -33,3 +40,4 @@ public:
 };
 
 #endif
+
