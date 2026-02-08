@@ -16,6 +16,11 @@ private:
 public:
     StateManager();
 
+// Invarianten:
+// - cursorPosition bleibt innerhalb [0, totalSize-1] (geclamped durch moveDown/moveRight).
+// - windowOffset ist immer so gewählt, dass cursorPosition im sichtbaren Bereich liegt.
+// - windowOffset bewegt sich in Schritten von bytesPerLine (zeilenweise Scrollen).
+
     void moveUp();
     void moveDown(size_t totalSize);
     void moveLeft();
@@ -27,3 +32,4 @@ public:
 };
 
 #endif
+
