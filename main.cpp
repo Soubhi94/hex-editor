@@ -14,7 +14,14 @@ std::string readInput(const std::string &prompt, std::function<bool(char)> valid
     std::cout << prompt;
 
     std::string input;
-
+  
+// Main Event Loop (Orchestrator):
+// 1) Render: EditorUI zeichnet Viewport (StateManager: cursor+offset) aus FileBuffer-Daten.
+// 2) Input: Platform::getChar() liefert Key-Events (plattformabhängig normalisiert).
+// 3) State Update: StateManager bewegt Cursor/Viewport innerhalb der Dateigrenzen.
+// 4) Edit: Eingaben (Hex/Bin/Text) werden validiert/geparst (ConversionEngine) und als Overlay in FileBuffer gesetzt.
+// 5) Save-on-exit: Bei Dirty-Status fragt das Programm beim Beenden nach Speichern (FileBuffer::save()).
+  
     while (true)
     {
         int key = Platform::getChar();
@@ -160,3 +167,4 @@ int main(int argc, char *argv[])
     Platform::cleanup();
     return 0;
 }
+
