@@ -1,52 +1,64 @@
-# Hybrid Hex Editor
+# PROJEKT: HYBRID HEX EDITOR
 
-Plattformunabhängiger Hex-Editor für die Konsole zur Analyse und
-Bearbeitung sehr großer Binärdateien ohne vollständiges Laden in den
-Arbeitsspeicher.
+Ein professioneller, plattformunabhängiger Hex-Editor für die Konsole.
+Entwickelt für die Analyse und Bearbeitung von Binärdateien jeder Größe
+(Gigabytes+), ohne den Arbeitsspeicher zu belasten.
 
-## Funktionen
+## VORTEILE & FUNKTIONEN
+1. **Hybrid-Ansicht:** Zeigt Hex, Binär und Text gleichzeitig an.
+2. **Direct Disk Access:** Lädt Dateien nicht in den RAM. Ideal für riesige Dateien (Logs, ISOs, Dumps).
+3. **Smart Overlay:** Speichert nur Änderungen im RAM. Das Original wird erst beim Speichern ("Patching") geändert.
+4. **Cross-Platform:** Läuft auf Windows, Linux und macOS ohne Installation von externen Bibliotheken (kein ncurses nötig).
+5. **Präzise Eingabe:** Strikte Validierung für Hex (0-F) und Binär (0-1).
 
--   Gleichzeitige Anzeige von Hex, Binär und ASCII
--   Direkter Dateizugriff ohne vollständiges Laden in den RAM
--   Änderungen werden als Overlay im Speicher gehalten und erst beim
-    Speichern gepatcht
--   Läuft auf Windows, Linux und macOS ohne externe Bibliotheken
--   Validierte Eingabe für Hex- und Binärwerte
+## INSTALLATION & KOMPILIEREN
+Voraussetzung: Ein C++ Compiler (GCC, Clang, MSVC) mit C++17 Support.
 
-## Kompilieren
+### Programm kompilieren
+Führen Sie diesen Befehl im Terminal aus:
 
-Voraussetzung: C++17 Compiler (GCC, Clang oder MSVC)
-
-``` bash
+```bash
 g++ -std=c++17 main.cpp src/*.cpp -I include -o hexeditor
 ```
 
-Wichtig: `tests.cpp` darf hier nicht enthalten sein.
+(WICHTIG: 'tests.cpp' darf hier NICHT enthalten sein.)
 
-Unit-Tests separat:
-
-``` bash
+#### Optional: Unit-Tests kompilieren
+Um die Tests separat zu bauen:
+```bash
 g++ -std=c++17 tests.cpp src/*.cpp -I include -o run_tests
 ```
 
-## Start
+## BENUTZUNG
+Starten Sie das Programm mit dem Dateinamen als Argument:
 
-``` bash
-./hexeditor datei.bin      # Linux / macOS
-hexeditor.exe datei.bin    # Windows
+```bash
+./hexeditor dateiname.bin   (Linux/macOS)
+hexeditor.exe dateiname.bin (Windows)
 ```
 
-## Steuerung
+## STEUERUNG
+Das Programm reagiert sofort auf Tastendruck (kein Enter für Navigation nötig).
 
-Navigation: - Pfeiltasten oder W A S D
+#### NAVIGATION
+- Pfeiltasten / WASD : Cursor bewegen
 
-Editieren: - H -- Hex-Wert eingeben (z.B. FF) - B -- Binärwert eingeben
-(z.B. 01010101) - T -- ASCII-Zeichen eingeben
+#### EDITIEREN
+- H : Hex-Modus    -> Wert eingeben (z.B. FF) -> Enter
+- B : Binaer-Modus -> Bits eingeben (z.B. 01010101) -> Enter
+- T : Text-Modus   -> Einzelnes Zeichen tippen
 
-System: - Q -- Beenden (fragt bei ungespeicherten Änderungen)
+#### SYSTEM
+ - Q : Beenden (Fragt bei ungespeicherten Änderungen nach Speichern)
 
-## Einschränkungen
+## BEKANNTE EINSCHRAENKUNGEN (LIMITATIONS)
+1. **Terminalgröße:**
+   Das Interface benötigt mind. 100 Zeichen Breite und 25 Zeilen Höhe.
 
--   Mindestgröße Terminal: 100 Zeichen Breite, 25 Zeilen Höhe
--   In alter Windows cmd.exe leichtes Flackern möglich
--   Nicht druckbare ASCII-Zeichen werden als Punkt dargestellt
+   Bei kleineren Fenstern kann das Layout verrutschen.
+
+2. **Flackern (Windows):** In der alten 'cmd.exe' kann es zu leichtem Flackern kommen.
+
+   Empfehlung: Nutzen Sie 'Windows Terminal' oder 'PowerShell'.
+
+3. **Sonderzeichen:** Nicht-druckbare Zeichen (0-31) werden im Text-Modus als '.' angezeigt.
